@@ -8,7 +8,6 @@ const slackClient = new SlackClient();
 
 function buildMessage(
   notification: Notification,
-  htmlUrl?: string,
 ): string {
   const emojiMap: Record<string, string> = {
     mention: "📢",
@@ -17,10 +16,6 @@ function buildMessage(
   };
 
   const emoji = emojiMap[notification.reason] ?? "🔔";
-
-  const link = htmlUrl
-    ? `URL:\n${htmlUrl}`
-    : "URL:\n(取得不可)";
 
   return [
     `${emoji} GitHub Notification`,
@@ -32,13 +27,12 @@ function buildMessage(
     `Title:`,
     notification.subject.title,
     "",
-    link,
+    notification.subject.url,
   ].join("\n");
 }
 
 async function main(): Promise<void> {
-  const notifications =
-    await githubClient.getNotifications();
+  const notifications = await githubClient.getNotifications();
 
   const targets = notifications.filter(
     (notification) =>
@@ -54,16 +48,7 @@ async function main(): Promise<void> {
 
   for (const notification of targets) {
     try {
-      const htmlUrl = notification.subject.url
-        ? await githubClient.getSubjectHtmlUrl(
-          notification.subject.url,
-        )
-        : undefined;
-
-      const message = buildMessage(
-        notification,
-        htmlUrl,
-      );
+      const message = buildMessage(notification);
 
       await slackClient.send(message);
 
