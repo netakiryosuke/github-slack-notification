@@ -6,6 +6,7 @@ export const config = {
     "mention",
     "review_requested",
     "comment",
+    "author",
   ],
 } as const;
 
