@@ -1,6 +1,5 @@
 import { config } from "./config.js";
 import { GithubClient } from "./githubClient.js";
-import type { Notification } from "./githubClient.js";
 import { SlackClient } from "./slackClient.js";
 
 const githubClient = new GithubClient();

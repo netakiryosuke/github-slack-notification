@@ -7,7 +7,7 @@ export interface Notification {
 
   subject: {
     title: string;
-    url: string | null;
+    url: string;
     type: string;
   };
 
