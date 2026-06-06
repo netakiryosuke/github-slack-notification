@@ -18,6 +18,10 @@ function buildMessage(
 
   const emoji = emojiMap[notification.reason] ?? "🔔";
 
+  const link = htmlUrl
+    ? `URL:\n${htmlUrl}`
+    : "URL:\n(取得不可)";
+
   return [
     `${emoji} GitHub Notification`,
     "",
@@ -28,7 +32,7 @@ function buildMessage(
     `Title:`,
     notification.subject.title,
     "",
-    htmlUrl ?? "",
+    link,
   ].join("\n");
 }
 
@@ -52,8 +56,8 @@ async function main(): Promise<void> {
     try {
       const htmlUrl = notification.subject.url
         ? await githubClient.getSubjectHtmlUrl(
-            notification.subject.url,
-          )
+          notification.subject.url,
+        )
         : undefined;
 
       const message = buildMessage(
