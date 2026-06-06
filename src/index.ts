@@ -13,13 +13,13 @@ const getNotificationTitle = (
       return "👀 レビュー依頼";
 
     case "mention":
-      return "📢 メンション";
+      return "🐻‍❄️ メンション";
 
     case "comment":
       return "💬 コメント";
 
     case "author":
-      return "📝 更新通知";
+      return "📝 AuthorのISSUE/PULL REQUESTに通知があります";
 
     default:
       return "🔔 GitHub通知";
