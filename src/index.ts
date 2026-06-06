@@ -6,29 +6,25 @@ import { SlackClient } from "./slackClient.js";
 const githubClient = new GithubClient();
 const slackClient = new SlackClient();
 
-function buildMessage(
-  notification: Notification,
-): string {
-  const emojiMap: Record<string, string> = {
-    mention: "📢",
-    review_requested: "👀",
-    comment: "💬",
-  };
+const getNotificationTitle = (
+  reason: string,
+): string => {
+  switch (reason) {
+    case "review_requested":
+      return "👀 レビュー依頼";
 
-  const emoji = emojiMap[notification.reason] ?? "🔔";
+    case "mention":
+      return "📢 メンション";
 
-  return [
-    `${emoji} GitHub Notification`,
-    "",
-    `Repository: ${notification.repository.full_name}`,
-    `Reason: ${notification.reason}`,
-    `Type: ${notification.subject.type}`,
-    "",
-    `Title:`,
-    notification.subject.title,
-    "",
-    notification.subject.url,
-  ].join("\n");
+    case "comment":
+      return "💬 コメント";
+
+    case "author":
+      return "📝 更新通知";
+
+    default:
+      return "🔔 GitHub通知";
+  }
 }
 
 async function main(): Promise<void> {
@@ -48,9 +44,17 @@ async function main(): Promise<void> {
 
   for (const notification of targets) {
     try {
-      const message = buildMessage(notification);
-
-      await slackClient.send(message);
+      await slackClient.send({
+        title: getNotificationTitle(
+          notification.reason,
+        ),
+        notificationTitle:
+          notification.subject.title,
+        repository:
+          notification.repository.full_name,
+        type: notification.subject.type,
+        githubUrl: notification.subject.url,
+      });
 
       await githubClient.markThreadAsRead(
         notification.id,
