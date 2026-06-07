@@ -44,13 +44,9 @@ async function main(): Promise<void> {
   for (const notification of targets) {
     try {
       await slackClient.send({
-        title: getNotificationTitle(
-          notification.reason,
-        ),
-        notificationTitle:
-          notification.subject.title,
-        repository:
-          notification.repository.full_name,
+        title: getNotificationTitle(notification.reason),
+        notificationTitle: notification.subject.title,
+        repository: notification.repository.full_name,
         type: notification.subject.type,
         githubUrl: notification.subject.url,
       });
