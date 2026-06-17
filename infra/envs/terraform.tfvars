@@ -1,0 +1,5 @@
+lambda_role_arn = ""
+scheduler_role_arn = ""
+github_pat = ""
+slack_webhook_url = ""
+schedule_expression = "cron(* 10-17 ? * MON-FRI *)"
