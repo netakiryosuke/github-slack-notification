@@ -14,6 +14,7 @@ module "lambda" {
 module "scheduler" {
   source = "./modules/scheduler"
 
+  schedule_expression = var.schedule_expression
   lambda_arn = module.lambda.function_arn
   lambda_name = module.lambda.function_name
   role_arn   = var.scheduler_role_arn

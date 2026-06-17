@@ -6,6 +6,10 @@ variable "scheduler_role_arn" {
   type = string
 }
 
+variable "schedule_expression" {
+  type = string
+}
+
 variable "github_pat" {
   type      = string
   sensitive = true

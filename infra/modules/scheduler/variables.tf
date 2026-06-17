@@ -1,3 +1,7 @@
+variable "schedule_expression" {
+  type = string
+}
+
 variable "lambda_arn" {
   type = string
 }

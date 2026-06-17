@@ -5,7 +5,7 @@ resource "aws_scheduler_schedule" "main" {
     mode = "OFF"
   }
 
-  schedule_expression = "cron(* 10-17 ? * MON-FRI *)"
+  schedule_expression = var.schedule_expression
   schedule_expression_timezone = "Asia/Tokyo"
 
   target {
