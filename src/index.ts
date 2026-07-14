@@ -5,6 +5,14 @@ import { SlackClient } from "./slackClient.js";
 const githubClient = new GithubClient();
 const slackClient = new SlackClient();
 
+const getGithubPageUrl = (apiUrl: string): string =>
+  apiUrl
+    .replace(
+      "https://api.github.com/repos/",
+      "https://github.com/",
+    )
+    .replace("/pulls/", "/pull/");
+
 const getNotificationTitle = (
   reason: string,
 ): string => {
@@ -48,7 +56,9 @@ async function main(): Promise<void> {
         notificationTitle: notification.subject.title,
         repository: notification.repository.full_name,
         type: notification.subject.type,
-        githubUrl: notification.subject.url,
+        githubUrl: getGithubPageUrl(
+          notification.subject.url,
+        ),
       });
 
       await githubClient.markThreadAsRead(
